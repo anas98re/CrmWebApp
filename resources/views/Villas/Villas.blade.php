@@ -640,8 +640,7 @@
                             <tr id="row1_todo_{{ $item->id }}">
                                 <th scope="row">{{ $i++ }}</th>
                                 <td>{{ $item->name }}</td>
-                                <td>{{ $item->employees->name }}</td>
-                                <td>{{ $item->numberOfRooms }}</td>
+                                <td>{{ $item->employees ? $item->employees->name : 'N/A' }}</td>                                <td>{{ $item->numberOfRooms }}</td>
                                 <td>{{ $item->address }}</td>
                                 <td>{{ $item->price }}</td>
                                 <td>{{ $item->space }}</td>

@@ -24,7 +24,9 @@ Route::get('/', function () {
 Route::get('/test', function () {
     return view('test');
 });
-
+Route::get('/test3', function () {
+    return view('javaScript.test3');
+});
 Route::get('/LAYOUT', function () {
     return view('LAYOUT');
 });
