@@ -161,6 +161,201 @@
                                             })
                                         Ex3 :(more cleane) names.forEach(el =>  console.log(el))
 
+        #for.Each and destructuring
+            - Ex1 : countries = [
+                        { country : "syria", loc : "Asia"},
+                        { country : "ksa", loc : "Asia"},
+                        { country : "Arg", loc : "Amrica"},
+                    ]
+                    countries.forEach(({country,loc}) => {
+                        if(loc =="Asia"){
+                        console.log(country)
+                        }
+                    })
+
+        #for.Each with object ?????
+            - Note : we cannot use forEach with object, as we used it with array
+                    , buecause it contines key & value, but we can use it like this:
+                    Object.values(x).forEach(el => { })
+                    Ex1: const country = { country : "syria", loc : "Asia"}
+                        Object.values(country).forEach(el => { console.log(el) })
+
+                    Ex2: const country = { country : "syria", loc : "Asia"}
+                        Object.keys(country).forEach(el => {
+                            console.log(`${el}: ${country[el]}`)
+                        })
+
+                    Ex3: object of object:
+                        const country = {
+                            1:{country : "syria", loc : "Asia"},
+                            2:{country : "jorden", loc : "Asia"}
+                        }
+                        Object.values(country).forEach(el => { console.log(el) })
+
+                    Ex4:
+                        const countries = {
+                            1:{country : "syria", loc : "Asia"},
+                            2:{country : "jorden", loc : "Asia"}
+                        }
+                        Object.keys(countries).forEach(el => {
+                            console.log(`${el}: ${countries[el].country}`)
+                        })
+
+        #Map ..............
+                - it like forEach, but it  make a new array
+                - Ex1:  const numbers = [10,220,30,40]
+                        const newNumber = numbers.map(el => el*2)
+                        console.log(newNumber)
+
+                - Ex2:  const numbers = [10,55,30,40]
+                        const newNumber = numbers.map(el => el%2 === 0 ? el*2 : el)
+                        console.log(newNumber)
+
+        #Map with object
+                -Ex1:   const country = { country : "syria", loc : "Asia"}
+                        const newContry = country.map((el) => el)
+                        console.log(newContry)
+
+                -Ex2:   const country = [{country : "syria", loc : "Asia"}, {country : "turkia", loc : "Asia"}]
+                        const newContry = country.map(({country, loc}) => country)
+                        console.log(newContry)
+
+                -Ex3:   const country = {1:{country : "syria", loc : "Asia"}, 2:{country : "turkia", loc : "Asia"}}
+                        const newContry = Object.values(country).map(({country, loc}) => country)
+                        console.log(newContry)
+
+        #Filer ...............
+                - map must to return same size of array, but filter return what we need from array
+                - It's like Map, but with condition.
+                - Ex1:  const numbers = [1,2,3,4,5,6,7,8,9,10]
+                        const newNumbers = numbers.filter((el) => el > 4)
+                        console.log(newNumbers)
+
+                - Ex2:  const names = [
+                            {user_name:"anas", user_age:24, user_address:"sj"},
+                            {user_name:"thabet", user_age:29, user_address:"sj"},
+                            {user_name:"reaf", user_age:30, user_address:"sj"},
+                            {user_name:"isam", user_age:25, user_address:"sj"}
+                                ]
+                        const namesFilter = names.filter(({user_name, user_age}) => user_age>25 && user_name === "reaf")
+                        console.log(namesFilter)
+
+        #Example to all consepts we lerned...
+                -   const compare = (a,b) => {
+                            const ageA = a.user_age;
+                            const ageB = b.user_age;
+                            return ageB - ageA;
+                        }
+                    const names = [
+                    {user_name:"Karem", user_age:30},
+                    {user_name:"Karim", user_age:34},
+                    {user_name:"mohammed", user_age:31},
+                    {user_name:"mohammed", user_age:40},
+                    {user_name:"mona", user_age:29},
+                    {user_name:"mina", user_age:21},
+                    {user_name:"ahmed", user_age:26},
+                    {user_name:"reham", user_age:24},
+                    {user_name:"mina", user_age:22},
+                    {user_name:"michel", user_age:19},
+                        ];
+                    const newNames = names
+                    .sort(compare)
+                    .slice(0,7)
+                    .filter(({user_age}) => user_age > 26)
+                    .map((el) => el.user_name === "Karim" ? {...el,user_name : "Karem"} : el)
+                    console.log(newNames)hel", user_age:19},
+                        ];
+                    const newNames = names.sort(compare)
+                    console.log(newNames)
+
+        #Include .............
+                - Ex1:  const names = ["anas", "isam","abed", "israa"]
+                        if (names.includes("karam")) {
+                            console.log("available")
+                        } else {
+                            console.log("not available")
+                        }
+
+                - Ex2:  const names = ["anas", "isam","abed", "israa"]
+                        const newName = names.filter((el) => el.includes("as"));
+                        console.log(newName)
+
+        #find ..............
+                - Ex1:  const numers = [2,3,2,6,4,2,7,1]
+                        const findBy = numers.find((el) => el === 2)
+                        console.log(findBy)
+                -Ex2 :  const names = [
+                            {user_name:"anas", user_age:24, user_address:"sj"},
+                            {user_name:"thabet", user_age:29, user_address:"sj"},
+                            {user_name:"reaf", user_age:30, user_address:"sj"},
+                            {user_name:"isam", user_age:25, user_address:"sj"}
+                                ]
+                        const namesFind = names.find((el) => el.user_name === "anas")
+                        console.log(namesFind)
+
+        #find and map ....
+                - Ex1 : const shoppingcart =[
+                            {id:1, quantity: 2},
+                            {id:2, quantity: 1},
+                        ]
+
+                        const selectItem = {id:1, quantity: 5};
+
+                        const cartHandler = (shoppingcart, selectItem) => {
+                            const checking = shoppingcart.find((el) => el.id === selectItem.id)
+
+                            if(checking) {
+                                return shoppingcart.map((el) =>
+                                el.id === selectItem.id ? {...el,quantity: el.quantity + selectItem.quantity} : el
+                                );
+                            }
+                            return [...shoppingcart, {...selectItem}]
+                        };
+
+                        const cartStatus = cartHandler(shoppingcart, selectItem);
+                        console.log("old", shoppingcart)
+                        console.log("new", cartStatus)
+
+                - Ex2 : const shoppingcart =[
+                            {id:1, quantity: 2},
+                            {id:2, quantity: 1},
+                        ]
+
+                        const selectItem = {id:11, quantity: 5};
+
+                        const cartHandler = (shoppingcart, selectItem) => {
+                            const checking = shoppingcart.find((el) => el.id === selectItem.id)
+
+                            if(checking) {
+                                return shoppingcart.map((el) =>
+                                el.id === selectItem.id ? {...el,quantity: el.quantity + selectItem.quantity} : el
+                                );
+                            }
+                            return [...shoppingcart, {...selectItem}]
+                        };
+
+                        const finalShopingCart = cartHandler(shoppingcart, selectItem);
+
+                        const fullInfo = [
+                                        {id:1, name2: "dsds"},
+                                        {id:2, name2: "sdsdcc"},
+                                        {id:11, name2: "hgtb"},
+                                    ]
+
+                        const retriveQuantity = (fullInfoID) => {
+                            const data = finalShopingCart.find((el) => el.id === fullInfoID);
+                            return data.quantity;
+                        }
+
+                        fullInfo.forEach((el) =>
+                            console.log({id: el.id, name: el.name2, quantity: retriveQuantity(el.id)})
+                        );
+
+        #findIndex .......
+                - it return the key,  but find retrun the object
+                - (else) in findIndex return (-1), but in find return undefined
+
+
 
 */
 
