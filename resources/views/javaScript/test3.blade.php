@@ -359,6 +359,357 @@
 
 */
 
+</script>
+
+<script>
+/*REACT.js
+
+        # Declarative VS imparative
+            - REACT is declarative, This is its meaning the workFlow is ready
+                and it is available for you to use.
+            - first, we have a note< react has many workFlow
+            - Imparative : You must work out your workflow (yourself),
+                and you must work every big and small thing (yourself) too.
+            Ex: when you want any thing, follow many steps: for example,
+                - go to the kitchen, open fridge, remove kitchen from fridge, ....., bring food.
+            - Declarative : the system gives you (ready workflow),
+                and coordinates(work) all your work for you.
+            Ex: when you want any thing, just requst it< like this,
+                - i want dinner with chicken.
+
+        # npm
+            - it's a huge library that suppert react, we need it to work (CLI)
+                and download many libraries.
+
+        #jsx(javaScriptXml),that converts the code like html we write inside React files,
+        into difficult codes in JavaScript so that the browser understands it.
+            Ex: ReactDom.render(
+                <div>hello world</div>, //This is Jsx
+                document.getElementById("root")
+                );
+
+            - one of roles in JSX , must there is a container contains all this,
+                that container is <div></div> , or we use <Fragment></Fragment>, and we maake import for it up.
+
+        # A component divides a web page into multiple separate parts,
+        Each part of a component has its own lifecycle.
+
+        #Every thing in React is an Object.
+            -style={{color :"red"}}
+            -Inner arch is an object
+            -outrer arch to JSX
+
+            -we don't use foreach inner jsx, we use map, because default jsx work foreach
+
+        #state ......
+            - It's a lifeCycle walks with you, from the strat to the end
+                we have information about old data, middele and new, we can
+                get any data we want.
+            - Any data that is modified use to it 'State'
+            - State is a sync
+            - Any update that occurs(happens) in state will result in the data being (rerender) re-displayed again
+
+            EX: const [filter, setFilter] = useState("");
+            - In short, filter is the current value,
+                and setFilter is the function used to update this value in React.
+
+        #Control Component
+            - The meaning is the react will control the Form, it will take data
+            - State be in charge(responsible) of everything.
+        #UnControl Component
+            - React will leave Dom to handle with The Form in the traditional way.
+            - UseRef like (getIlementById), we control the form using notmal DOM
+
+        - In general, 90% we use control component, we update form by state.
+
+        #Call Back function
+            - instad of i send data from parent to child, i can send data from child to parent.
+
+        #Render
+            - In React, render is the function responsible for converting a React component into
+                renderable (قابلة للعرض) DOM elements on the page.
+            - render takes JSX and converts it to actual DOM elements.
+
+        #PART 2
+        #UseEffect
+            - UseEffect always come after state.
+            - take two basic parameters, the first parameter will be (call back ffunction Or Anoymos function) and is very important, it doesn't work without it.
+            EX: useEffect(() => {
+                    console.log("useEffect one time");
+                } , []);
+                - () => {} this is call back function, and the Api code inner it
+                - [] inner it (useEffect dependency array)
+                - while useEffect dependency array is empty, useEffect will work one time.
+                - will work after first render.
+
+            1: "useEffect with empty dependency array"
+            - rules for all useEffects statues.
+                render
+                useEffect
+
+                Ex: useEffect(() => {
+                        console.log("useEffect one time");
+                ` } , []);
+                - "useEffect with empty dependency array"
+                - () => {} this is call back function, and the Api code inner it
+                - [] inner it useEffect dependency array
+                - while useEffect dependency array is empty, useEffect will work one time.
+                - will work after first render
+
+            2: "useEffect with not empty dependency array"
+            - rules
+                render
+                useEffect
+                name can be state, props or any var we define it in this component.
+                update the state -> re-render (sec render)
+                useEffect -> watcher -> dependency -> name ? updated -> yes -> do the effect / no -> skip the effect.
+
+                Ex: useEffect(() => {
+                        if(name) {
+                        console.log("update");
+                        }
+                    } , [name]);
+                - "useEffect with not empty dependency array"
+                - [name] we say to useEffect , watch name, any cahange will happen in name -> this effect will work.
+                - run when update happen.
+                - when: after first render, and when dependency updated.
+
+            3: "useEffect with no dependency array.
+                - run when update happens
+                - when: after first render, and after re-render (sec render)
+                Ex: useEffect (() =>{
+                    console.log("effect");
+                });
+
+                - rules
+                    render
+                    change->state
+                    re render
+                    use effect
+
+
+            4: clean up
+
+                Ex: useEffect(() => {
+                    if(name){
+                        const Timeout = setTimeout(() => {
+                            console.log("effect");
+                        }, 2000);
+
+                        return () => {
+                            clearTimeout(Timeout);
+                        };
+                    }
+                } , [name]);
+
+                rules:
+                    render
+                    use effect
+                    return / init clean up
+
+                    change state
+                    render
+                    clean up excute.
+                    use effect -> watcher -> name update -> run
+                    return / init clean up
+
+            - when we use any state in useEffect we must put it in dependency array.
+            - what will happen if it is sitting the state with the same value?
+                -  the rule says : useEffect , if the state came to it
+                the (same exactly value) will re-render (one time).
+
+            -Ex: we have two useEffect will work with each other, the second useEffect will fire Api
+                in the same time(directly), and the first useEffect will work the setTimeout directly, but
+                the first if see the same term => will not re-render, so the second useEffect will
+                not work.
+
+            - How to get previous props_state with React Hooks.?? //EMPORTANT
+                - via useRef.
+                - useRef use like getElementById, but here we assign it data,
+                - and if happen change will not happen re-ernder,
+                    reverse state (if happen change will happen re-render)
+                - so we need a thing to save without effect (via useRef)
+
+            -EX:
+                const [term, setTerm] = useState('javascript');
+                const prevTermState = useRef();
+                useEffect(() => {
+                    prevTermState.current = term;//here we define currrent and put into it term value.
+                });
+
+                -what will happen here, in this example?
+                    1- initiate the component
+                        - state -> javaScript / useRef -> undfine (one time only)
+                        - skip -> useEffect
+                        - prevTerm -> useRef -> undefine
+                        - render -> term(search) -> useRef (undefine)
+                        - do the effect -> useRef.current = term -> javaScript
+
+                    2- change -> state
+                        - skip -> useEffect
+                        - prevTerm -> useRef -> javaScript
+                        - render -> term(javaScript2) -> useRef (javaScript)
+                        - do the effect -> useRef.current = term -> javaScript2
+
+                    3- change -> state
+                        - skip -> useEffect
+                        - prevTerm -> useRef.current -> javaScript2
+                        - render -> term(javaScript23) -> useRef (javaScript2)
+                        - do the effect -> useRef.current = term -> javaScript23
+
+
+            - costume hooks is a function , inner it is react life cycle or any function like useRef
+                or useStete , this function can write logic, get data or return data.
+                but the basic pattren for it (return data)
+                - if return jsx will be component, so it writes logic or return data.
+
+
+
+            - How useEffect and costum hook will work behind the sence??
+
+                Ex:
+                1- in " export default function App3() "
+                    const [term, setTerm] = useState('javascript');
+                    const [result, setResult] = useState([]);
+                    const prevState = usePrevState(term);
+
+                    useEffect(() => {
+                    const search = async () => {
+                        const respond = await axios.get(' http://127.0.0.1:8000/api/tset7', {
+                            params: {
+                                location: 'query',
+                                list: 'search',
+                                origin: '*',
+                                format: 'json',
+                                srsearch: term,
+                            },
+                        });
+                        setResult(respond.data);
+                        }
+                            if (!result.length) {
+                                if (term) {
+                                    search();
+                                }
+                            } else if(prevState !== term) {
+                        const debounceSearch = setTimeout(() => {
+                            if (term) {
+                                search();
+                                }
+                            }, 1500);
+
+                            return () => {
+                                clearTimeout(debounceSearch);
+                            };
+                        }
+                    }, [term, result.length, prevState]);
+
+                2- in " const usePrevState = (state) => {} "
+                    const usePrevState = (state) => {
+                    const ref = useRef();
+
+                    useEffect (() => {
+                        ref.current = state;
+                    });
+
+                        return ref.current;
+                    }
+
+                - init : react will start its codes for the first time.
+                - term : state -> javaScript
+                - results : state -> array:empty
+                - prevTerm : custom hook , it names (use(..anyWord...))
+                - in 2: ref = useRef(); will be its value : 1: undefined
+                - skip useEffect -> return undefined
+                - useEffect API -> skip
+                - return
+
+                - after render
+                - react will find useEffect in 2 didn't work, so react will work this useEffect.
+                - what will work this useEffect here, will work update for ref.current and git a value.
+                    but this don't work return, just inject the Ref,
+                    (In short here: useEffect inside costum hooks -> skip useEffect -> return undefined )
+                - useEffect API -> update state -> result ->
+
+                - new render
+                - term : state -> javaScript
+                - don't create state like the first render , just show its value.
+                - result : state -> array: list form api
+                - prevTerm -> costum hook -> return javaScript  because after render 1 : useRef -> javaScript,
+                    and don't work sueEffect.
+
+                - after render 2
+                - useEffect -> inside costum hooks -> useRef -> javaScript
+                - useEffect -> API -> =>>>> javaScript vs prevTerm : javaScript
+
+                - update input -> update state -> re render
+                - term : state -> javaScript2
+                - result : state -> old data
+                - prevTerm -> costum hook -> javaScript
+                - return
+
+                - after render 3
+                - useEffect -> inside costum hooks -> useRef -> javaScript2
+                - useEffect -> API -> =>>>> javaScript2 vs prevTerm : javaScript =>>> search will run =>> update state
+
+                - re render 4
+                - ...
+
+
+        #Optimization
+                - react go to return statment -> it works init to all component in this return.
+                - but if we have a lot of component in this return, it will take a lot of time.
+                - so we can optimize it.
+
+
+            = when i install react, actualy i install two liprary (react and react-dom)
+                in web its name will be react-dom, but in mobile its name will be reactnative.
+
+                - react responsability will be create any logic (like function, class, loop, etc)
+                - when i use (hooks helper) like useRef, useState, useEffect, etc, and component
+                    it will be create in react, and these things will be understand by react.
+                - And react responsability will understand if happen update in state or proos,
+                    and it will manage globle state management like context.
+                - it builds componets and tree components.
+
+                - react-dom shows the final result that will be send from react
+                - reract works all processes that we spoke about it up, and send
+                    the results to react dom to show it.
+                - react-dom is a library that we use to render the final result.
+                - React DOM is a library that is used in React applications to render
+                    the final output of the components to the DOM (Document Object Model).
+                - React-dom contains virtual Dom , which means a stage between react logic
+                    real dom which is what we see in the browser.
+                - virtual dom is built as an object inside another object, instead another object, etc.
+
+                - re evaluation : which means react come back to work every thing again exept state.
+
+                Ex- React -> Update state/porps/globle state -> re-run, re-evaluate line by line
+                        -> check the dev
+                        -> there is Def (new state/porps/globle) ? Call ReactDom(re-render, new node only)
+                        : Dont call ReactDom.
+                Ex- React -> Update state/porps/globle state -> re-run, re-evaluate line by line
+                        -> reach to return -> component -> re-run, re-evaluate line by line
+                        -> check the dev
+                        -> there is Def (new state/porps/globle) ? Call ReactDom(re-render, new node only)
+                        : Dont call ReactDom.
+
+                - re-run, re-evaluate must work , but re-render maybe yes(if happen change) or no(if not).
+
+                - react whether it comes to it new props or not, or is happened change in state.
+                    regardless will be re-render or not, will be re-evaluate. (EMPORTANT)
+                    (All things before return will work)
+
+                - re-render : This term is specific to the UI.
+                - re-evaluate : This term is specific to the Logic.
+                - re-run : This term will work this or that.
+
+
+                - Okey, Okey...
+                - how can we solve all these problems???
+                ... i will come later...
+                bye bye ..
+
+*/
 
 </script>
 <script>
