@@ -559,11 +559,11 @@
 
 
             - costume hooks is a function , inner it is react life cycle or any function like useRef
-                or useStete , this function can write logic, get data or return data.
+                or useStete , this function can write logic, get data or return data. 
                 but the basic pattren for it (return data)
-                - if return jsx will be component, so it writes logic or return data.
-
-
+                - if return jsx will be component, so it writes logic or return data.     
+                
+                
 
             - How useEffect and costum hook will work behind the sence??
 
@@ -581,7 +581,7 @@
                                 list: 'search',
                                 origin: '*',
                                 format: 'json',
-                                srsearch: term,
+                                srsearch: term, 
                             },
                         });
                         setResult(respond.data);
@@ -601,7 +601,7 @@
                                 clearTimeout(debounceSearch);
                             };
                         }
-                    }, [term, result.length, prevState]);
+                    }, [term, result.length, prevState]); 
 
                 2- in " const usePrevState = (state) => {} "
                     const usePrevState = (state) => {
@@ -619,29 +619,29 @@
                 - results : state -> array:empty
                 - prevTerm : custom hook , it names (use(..anyWord...))
                 - in 2: ref = useRef(); will be its value : 1: undefined
-                - skip useEffect -> return undefined
-                - useEffect API -> skip
-                - return
+                - skip useEffect -> return undefined 
+                - useEffect API -> skip 
+                - return 
 
                 - after render
                 - react will find useEffect in 2 didn't work, so react will work this useEffect.
                 - what will work this useEffect here, will work update for ref.current and git a value.
                     but this don't work return, just inject the Ref,
                     (In short here: useEffect inside costum hooks -> skip useEffect -> return undefined )
-                - useEffect API -> update state -> result ->
-
+                - useEffect API -> update state -> result -> 
+                    
                 - new render
                 - term : state -> javaScript
                 - don't create state like the first render , just show its value.
                 - result : state -> array: list form api
                 - prevTerm -> costum hook -> return javaScript  because after render 1 : useRef -> javaScript,
                     and don't work sueEffect.
-
-                - after render 2
+                
+                - after render 2 
                 - useEffect -> inside costum hooks -> useRef -> javaScript
                 - useEffect -> API -> =>>>> javaScript vs prevTerm : javaScript
 
-                - update input -> update state -> re render
+                - update input -> update state -> re render 
                 - term : state -> javaScript2
                 - result : state -> old data
                 - prevTerm -> costum hook -> javaScript
@@ -656,7 +656,7 @@
 
 
         #Optimization
-                - react go to return statment -> it works init to all component in this return.
+                - react go to return statment -> it works init to all component in this return.    
                 - but if we have a lot of component in this return, it will take a lot of time.
                 - so we can optimize it.
 
@@ -666,13 +666,13 @@
 
                 - react responsability will be create any logic (like function, class, loop, etc)
                 - when i use (hooks helper) like useRef, useState, useEffect, etc, and component
-                    it will be create in react, and these things will be understand by react.
+                    it will be create in react, and these things will be understand by react.    
                 - And react responsability will understand if happen update in state or proos,
                     and it will manage globle state management like context.
-                - it builds componets and tree components.
+                - it builds componets and tree components.  
 
                 - react-dom shows the final result that will be send from react
-                - reract works all processes that we spoke about it up, and send
+                - reract works all processes that we spoke about it up, and send 
                     the results to react dom to show it.
                 - react-dom is a library that we use to render the final result.
                 - React DOM is a library that is used in React applications to render
@@ -682,19 +682,19 @@
                 - virtual dom is built as an object inside another object, instead another object, etc.
 
                 - re evaluation : which means react come back to work every thing again exept state.
-
+                
                 Ex- React -> Update state/porps/globle state -> re-run, re-evaluate line by line
-                        -> check the dev
+                        -> check the dev 
                         -> there is Def (new state/porps/globle) ? Call ReactDom(re-render, new node only)
                         : Dont call ReactDom.
                 Ex- React -> Update state/porps/globle state -> re-run, re-evaluate line by line
                         -> reach to return -> component -> re-run, re-evaluate line by line
-                        -> check the dev
+                        -> check the dev 
                         -> there is Def (new state/porps/globle) ? Call ReactDom(re-render, new node only)
-                        : Dont call ReactDom.
+                        : Dont call ReactDom.        
 
                 - re-run, re-evaluate must work , but re-render maybe yes(if happen change) or no(if not).
-
+                
                 - react whether it comes to it new props or not, or is happened change in state.
                     regardless will be re-render or not, will be re-evaluate. (EMPORTANT)
                     (All things before return will work)
@@ -705,11 +705,63 @@
 
 
                 - Okey, Okey...
-                - how can we solve all these problems???
+                - how can we solve all these problems??? 
                 ... i will come later...
                 bye bye ..
+                
+                - well , We are back ..
+                
+                - I will make re-evaluate look like re-render , don't happen any thing unless if happen 
+                    change in state or porps. Don't make evaluate work unless if happen change in props.
+                    (we will do all this via react memo)
 
+                - react memo in simple: it takes props copy from it, why , to retrun empty.
+                Ex: export default React.memo(viewText)
+                    we put it here to work, and put inside it what don't want to work.  
+                - we put react memo on parent, to prevent all children(what we use it in return statment)
+                    to work.      
+
+                - we have in javaScript (object, array, function) it is call referene type and all of them 
+                    are object. so (( obj1 = {name: 'anas'} != obj2 ={name: 'anas'} ))
+                    so will excute as props every time. 
+                    reverse (( name = 'anas' === name2 = 'anas' )) wil not work. 
+                    
+                    Ex: 1. obj1 = {name: 'anas'} every evalute will excute because it takes different value.
+                        2. name = anas every evalute will not excute because it takes same value.
+                        1 will work evaluate then after it rerender
+                        2 will not work evaluate
+                    - SO to prevent (1) what should we do?
+                        (we use useMemo)
+                        Ex: const name = useMemo(() => {
+                            return {name: 'anas'}
+                        }, []);
+                        this concept is used with array, object and function in return status.
+                    - using useMemo like exactly using useEffect , it uses arrow function.
+                        so we put the object that evalute evert time inside useMemo to excute one time.   
+                        and if we want to excute another time without prevent => put dependcy => []. 
+                
+                - the Object: three types => object, array, function... 
+                
+                - to prevent function(without return) works again, we use useCallBack .
+                        Ex: const ageHandler = useCallback(() => {
+                            console.log();
+                        },[] );
+                        - but if it was function with retrun => we use useMemo. 
+                        - useCallBack take callBack function, first thing.
+                        - stande form for useCallBack:
+                            Ex: const ageHandler = useCallback(fcunction() {} ,[])
+                        - useCallback worl (mimomize) for function inside it.
+                        - mimomize means prevent the function from (revalute and rerender) again.  
+                        - but useMemo prevent (only) what it returns inside it.
+
+                - if spicefic state and we want to show it , but it inside useMemo, what shode we do?
+                    we put inside dependency array , to work it like watcher .
+                        Ex: const const name = useMemo (() => {
+                            return user
+                        }, [user]); 
+                        if the use changed return new reference => will new name.
 */
+              
 
 </script>
 <script>
