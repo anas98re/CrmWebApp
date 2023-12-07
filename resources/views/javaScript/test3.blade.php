@@ -656,7 +656,7 @@
 
 
         #Optimization
-                - react go to return statment -> it works init to all component in this return.    
+                - react goes to return statment -> it works init to all component in this return.    
                 - but if we have a lot of component in this return, it will take a lot of time.
                 - so we can optimize it.
 
@@ -695,7 +695,7 @@
 
                 - re-run, re-evaluate must work , but re-render maybe yes(if happen change) or no(if not).
                 
-                - react whether it comes to it new props or not, or is happened change in state.
+                - react whether comes to it new props or not, or is happened change in state.
                     regardless will be re-render or not, will be re-evaluate. (EMPORTANT)
                     (All things before return will work)
 
@@ -737,7 +737,7 @@
                         }, []);
                         this concept is used with array, object and function in return status.
                     - using useMemo like exactly using useEffect , it uses arrow function.
-                        so we put the object that evalute evert time inside useMemo to excute one time.   
+                        so we put the object that evalute every time inside useMemo to excute one time.   
                         and if we want to excute another time without prevent => put dependcy => []. 
                 
                 - the Object: three types => object, array, function... 
@@ -750,7 +750,7 @@
                         - useCallBack take callBack function, first thing.
                         - stande form for useCallBack:
                             Ex: const ageHandler = useCallback(fcunction() {} ,[])
-                        - useCallback worl (mimomize) for function inside it.
+                        - useCallback work (mimomize) for function inside it.
                         - mimomize means prevent the function from (revalute and rerender) again.  
                         - but useMemo prevent (only) what it returns inside it.
 
@@ -760,8 +760,64 @@
                             return user
                         }, [user]); 
                         if the use changed return new reference => will new name.
-*/
-              
+
+
+        #Redux ..........
+            - local state Vs Global state
+                - local state is scoped (Seen from one place) we have drilling props(حفر)(pass from more place)  
+                (pass props & call back function) between components to share data.
+                - global state allows to access state from anwhere without do more drilling.
+                - in briefly (state is in one place , it name is global state, we can access to it from anywhere).
+
+            - Store: is a tank(خزان) inside it the state thet i want to shere  it between every component.
+                and i can access it from anywhere. 
+                Ex: Auth: i need it to share it between every component.     
+                Ex: User Info: i need it to share it between every component
+                - how to App Component read this state ? by suscribe with store to listen to updates.
+                    when the app stand the app see data inside Store .
+                - how the state will be updated? By reduser.
+                    - reduser that created this state(init state).
+                    - when App wants to update the state Reduser will do this.
+                    - reduser that write the state logic, we don't write login in App.
+                    - reduser that send the fnal state form to Store.
+                - Any update in state we names it action. this action will fire  from App to reduser.
+                    and inside this action will be a spicific description says to reduser what does it do.
+                    - Action that says to reduser what logic to work. work delete logic, work update logic, etc...
+                - in general, we fire a thing its name is (Dispatch Action), goes to reduser
+                    and says to reduser what must it do (in a word "Description").
+
+                conclusion:
+                - only reduser can create/update state.
+                - the store is the place that contains all states.
+                - (Dispatch function) send a trigger to force(مشغل لإجبار) reduser do update.
+                - subscribe wth the store to listen to updates.
+                - The basic purpose of the subscribe is that when the app is created for the first time
+                    the data inside the store is sent to the App Component.
+                - without subscribe there is no re-render happen and component will not see updates.
+
+            - Action & Dispatch fn
+                - we know what action we want to dispatch to reduse via Action.
+                - Action contains two things (Type: Action name, Payload: update value like request)..
+                
+                conclusion:
+                - Action is something like a contract (document expline what will happen).
+                - Dispatch function: is a function take action and sends to reduser to make updates.
+
+            - Reduser
+                - is a function
+                - should be pure (take parameters and return it, It has nothing to do with Api)
+                - init state and send it to the store.
+                - state should be an object (advice)
+                - don't mutate.
+                - always return.
+                - can have many reducers inside (reducers box).
+                - return state.
+                - return state will take place in store.
+
+                so , how & when reducer function will fire?
+                
+
+*/              
 
 </script>
 <script>
